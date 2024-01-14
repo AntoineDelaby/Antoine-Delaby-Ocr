@@ -1,0 +1,25 @@
+name: OcrTest
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    
+jobs:
+  build:
+    needs: tags
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup OcrTest
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.100
+      - run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./coverage/opencover.xml
+      - run: dotnet publish ./src/Antoine.Delaby.Ocr.WebApi/Antoine.Delaby.Ocr.csproj --self-contained true --output ./win-x64/ocrtest -c Release -r win-x64 /p:PublishSingleFile=true /p:PublishTrimmed=true /p:PublishReadyToRun=true
+      - name: Upload WebApp1 Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Publish win-x64 OcrTest
+          path: ./win-x64/fibonacci
