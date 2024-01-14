@@ -1,0 +1,6 @@
+@Antoine.Delaby.Ocr.WebApi_HostAddress = http://localhost:5256
+
+GET {{Antoine.Delaby.Ocr.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
